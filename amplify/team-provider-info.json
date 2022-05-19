@@ -15,7 +15,7 @@
       "function": {
         "amplifyapivtldc8f102f": {
           "deploymentBucketName": "amplify-amplifyapivtl-dev-84411-deployment",
-          "s3Key": "amplify-builds/amplifyapivtldc8f102f-4d6d446d707671432f74-build.zip"
+          "s3Key": "amplify-builds/amplifyapivtldc8f102f-5178574f4149372b506f-build.zip"
         }
       }
     }

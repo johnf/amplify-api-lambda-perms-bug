@@ -31,7 +31,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifyapivtl-dev-84411-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiamplifyapivtl"
       },
-      "lastPushTimeStamp": "2022-05-19T22:55:43.787Z",
+      "lastPushTimeStamp": "2022-05-19T22:59:15.544Z",
       "lastPushDirHash": "GDdCW6NhYpjZMp88PCcoUs6q73s="
     }
   },
@@ -40,26 +40,36 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastBuildTimeStamp": "2022-05-19T22:53:38.805Z",
+      "lastBuildTimeStamp": "2022-05-19T22:57:10.545Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-19T22:53:38.849Z",
-      "distZipFilename": "amplifyapivtldc8f102f-4d6d446d707671432f74-build.zip",
+      "lastPackageTimeStamp": "2022-05-19T22:57:10.565Z",
+      "distZipFilename": "amplifyapivtldc8f102f-5178574f4149372b506f-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-amplifyapivtl-dev-84411-deployment",
-        "s3Key": "amplify-builds/amplifyapivtldc8f102f-4d6d446d707671432f74-build.zip"
+        "s3Key": "amplify-builds/amplifyapivtldc8f102f-5178574f4149372b506f-build.zip"
       },
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifyapivtl-dev-84411-deployment/amplify-cfn-templates/function/amplifyapivtldc8f102f-cloudformation-template.json",
         "logicalId": "functionamplifyapivtldc8f102f"
       },
-      "lastPushTimeStamp": "2022-05-19T22:55:43.949Z",
+      "lastPushTimeStamp": "2022-05-19T22:59:15.697Z",
       "output": {
         "Region": "ap-southeast-2",
         "Arn": "arn:aws:lambda:ap-southeast-2:119243932312:function:amplifyapivtldc8f102f-dev",
         "Name": "amplifyapivtldc8f102f-dev",
         "LambdaExecutionRole": "amplifyapivtlLambdaRoledd226562-dev"
       },
-      "lastPushDirHash": "/Va73bWsfMPIKaONvJUBAGKQKPg="
+      "lastPushDirHash": "C3OWg91yTBfQWBDloDAO977jzYI=",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "amplifyapivtl",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
     }
   }
 }
