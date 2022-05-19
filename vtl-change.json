@@ -1,0 +1,144 @@
+{
+    "functions": [
+        {
+            "functionId": "3f4kmzcwiba2zepswqj34z4mle",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/3f4kmzcwiba2zepswqj34z4mle",
+            "name": "QueryListTodosDataResolverFn",
+            "dataSourceName": "TodoTable",
+            "requestMappingTemplate": "## [Start] List Request. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $limit = $util.defaultIfNull($args.limit, 100) )\n#set( $ListRequest = {\n  \"version\": \"2018-05-29\",\n  \"limit\": $limit\n} )\n#if( $args.nextToken )\n  #set( $ListRequest.nextToken = $args.nextToken )\n#end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = $args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $ListRequest.filter = $filterExpression )\n  #end\n#end\n#if( !$util.isNull($ctx.stash.modelQueryExpression) && !$util.isNullOrEmpty($ctx.stash.modelQueryExpression.expression) )\n  $util.qr($ListRequest.put(\"operation\", \"Query\"))\n  $util.qr($ListRequest.put(\"query\", $ctx.stash.modelQueryExpression))\n  #if( !$util.isNull($args.sortDirection) && $args.sortDirection == \"DESC\" )\n    #set( $ListRequest.scanIndexForward = false )\n  #else\n    #set( $ListRequest.scanIndexForward = true )\n  #end\n#else\n  $util.qr($ListRequest.put(\"operation\", \"Scan\"))\n#end\n#if( !$util.isNull($ctx.stash.metadata.index) )\n  #set( $ListRequest.IndexName = $ctx.stash.metadata.index )\n#end\n$util.toJson($ListRequest)\n## [End] List Request. **",
+            "responseMappingTemplate": "## [Start] ResponseTemplate. **\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "3p56doujpzh4nc6qwz5g5r6uvu",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/3p56doujpzh4nc6qwz5g5r6uvu",
+            "name": "QuerygetTodoauth0Function",
+            "dataSourceName": "NONE_DS",
+            "requestMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"IAM Authorization\" )\n  #set( $adminRoles = [\"amplifyapivtldc8f102f-dev\"] )\n  #foreach( $adminRole in $adminRoles )\n    #if( $ctx.identity.userArn.contains($adminRole) && $ctx.identity.userArn != $ctx.stash.authRole && $ctx.identity.userArn != $ctx.stash.unauthRole )\n      #return($util.toJson({}))\n    #end\n  #end\n  #if( !$isAuthorized )\n    #if( $ctx.identity.userArn == $ctx.stash.unauthRole )\n      #set( $isAuthorized = true )\n    #end\n  #end\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+            "responseMappingTemplate": "$util.toJson({})",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "3ubzjbi2j5ak5lftit26bienvi",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/3ubzjbi2j5ak5lftit26bienvi",
+            "name": "QuerygetTodopostAuth0Function",
+            "dataSourceName": "NONE_DS",
+            "requestMappingTemplate": "## [Start] Sandbox Mode Disabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled. **",
+            "responseMappingTemplate": "$util.toJson({})",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "dg3zknd4hrctjd6jd35emaqs5e",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/dg3zknd4hrctjd6jd35emaqs5e",
+            "name": "MutationcreateTodoauth0Function",
+            "dataSourceName": "NONE_DS",
+            "requestMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $inputFields = $util.parseJson($util.toJson($ctx.args.input.keySet())) )\n#set( $isAuthorized = false )\n#set( $allowedFields = [] )\n#if( $util.authType() == \"IAM Authorization\" )\n  #set( $adminRoles = [\"amplifyapivtldc8f102f-dev\"] )\n  #foreach( $adminRole in $adminRoles )\n    #if( $ctx.identity.userArn.contains($adminRole) && $ctx.identity.userArn != $ctx.stash.authRole && $ctx.identity.userArn != $ctx.stash.unauthRole )\n      #return($util.toJson({}))\n    #end\n  #end\n  #if( $ctx.identity.userArn == $ctx.stash.unauthRole )\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized && $allowedFields.isEmpty() )\n$util.unauthorized()\n#end\n#if( !$isAuthorized )\n  #set( $deniedFields = $util.list.copyAndRemoveAll($inputFields, $allowedFields) )\n  #if( $deniedFields.size() > 0 )\n    $util.error(\"Unauthorized on ${deniedFields}\", \"Unauthorized\")\n  #end\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+            "responseMappingTemplate": "$util.toJson({})",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "fezpm5llj5crtgi7umzja2oedm",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/fezpm5llj5crtgi7umzja2oedm",
+            "name": "MutationcreateTodoinit0Function",
+            "dataSourceName": "NONE_DS",
+            "requestMappingTemplate": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n#set( $createdAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"id\", $util.autoId()))\n$util.qr($ctx.stash.defaultValues.put(\"createdAt\", $createdAt))\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $createdAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+            "responseMappingTemplate": "$util.toJson({})",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "ibup32yslrgippz5rtafjgor4m",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/ibup32yslrgippz5rtafjgor4m",
+            "name": "MutationDeleteTodoDataResolverFn",
+            "dataSourceName": "TodoTable",
+            "requestMappingTemplate": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+            "responseMappingTemplate": "## [Start] ResponseTemplate. **\n$util.qr($ctx.result.put(\"__operation\", \"Mutation\"))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "k2wjhaps5jdw5mb6tpw3p5u72m",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/k2wjhaps5jdw5mb6tpw3p5u72m",
+            "name": "MutationdeleteTodoauth0Function",
+            "dataSourceName": "TodoTable",
+            "requestMappingTemplate": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+            "responseMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"IAM Authorization\" )\n  #set( $adminRoles = [\"amplifyapivtldc8f102f-dev\"] )\n  #foreach( $adminRole in $adminRoles )\n    #if( $ctx.identity.userArn.contains($adminRole) && $ctx.identity.userArn != $ctx.stash.authRole && $ctx.identity.userArn != $ctx.stash.unauthRole )\n      #return($util.toJson({}))\n    #end\n  #end\n  #if( $ctx.identity.userArn == $ctx.stash.unauthRole )\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "nptdhwgdqff2hcntkdbny5dhpi",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/nptdhwgdqff2hcntkdbny5dhpi",
+            "name": "QueryGetTodoDataResolverFn",
+            "dataSourceName": "TodoTable",
+            "requestMappingTemplate": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $expression = \"\" )\n  #set( $expressionNames = {} )\n  #set( $expressionValues = {} )\n  #foreach( $item in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    #set( $expression = \"$expression#keyCount$velocityCount = :valueCount$velocityCount AND \" )\n    $util.qr($expressionNames.put(\"#keyCount$velocityCount\", $item.key))\n    $util.qr($expressionValues.put(\":valueCount$velocityCount\", $item.value))\n  #end\n  #set( $expression = $expression.replaceAll(\"AND $\", \"\") )\n  #set( $query = {\n  \"expression\": $expression,\n  \"expressionNames\": $expressionNames,\n  \"expressionValues\": $expressionValues\n} )\n#else\n  #set( $query = {\n  \"expression\": \"id = :id\",\n  \"expressionValues\": {\n      \":id\":     $util.parseJson($util.dynamodb.toDynamoDBJson($ctx.args.id))\n  }\n} )\n#end\n$util.qr($GetRequest.put(\"query\", $query))\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  $util.qr($GetRequest.put(\"filter\", $util.parseJson($util.transform.toDynamoDBFilterExpression($ctx.stash.authFilter))))\n#end\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+            "responseMappingTemplate": "## [Start] Get Response template. **\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#end\n#if( !$ctx.result.items.isEmpty() && $ctx.result.scannedCount == 1 )\n  $util.toJson($ctx.result.items[0])\n#else\n  #if( $ctx.result.items.isEmpty() && $ctx.result.scannedCount == 1 )\n$util.unauthorized()\n  #end\n  $util.toJson(null)\n#end\n## [End] Get Response template. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "onp7i7kzvnaarbyfbnmzjkadga",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/onp7i7kzvnaarbyfbnmzjkadga",
+            "name": "MutationCreateTodoDataResolverFn",
+            "dataSourceName": "TodoTable",
+            "requestMappingTemplate": "## [Start] Create Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n$util.qr($mergedValues.put(\"__typename\", \"Todo\"))\n#set( $PutObject = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"PutItem\",\n  \"attributeValues\":   $util.dynamodb.toMapValues($mergedValues),\n  \"condition\": $condition\n} )\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": false\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": false\n  }\n}))\n#end\n## End - key condition **\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($PutObject.put(\"condition\", $Conditions))\n#end\n#if( $ctx.stash.metadata.modelObjectKey )\n  $util.qr($PutObject.put(\"key\", $ctx.stash.metadata.modelObjectKey))\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($mergedValues.id)\n} )\n  $util.qr($PutObject.put(\"key\", $Key))\n#end\n$util.toJson($PutObject)\n## [End] Create Request template. **",
+            "responseMappingTemplate": "## [Start] ResponseTemplate. **\n$util.qr($ctx.result.put(\"__operation\", \"Mutation\"))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "qqvcavshabe3pe4uvmmqqbsuny",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/qqvcavshabe3pe4uvmmqqbsuny",
+            "name": "MutationUpdateTodoDataResolverFn",
+            "dataSourceName": "TodoTable",
+            "requestMappingTemplate": "## [Start] Mutation Update resolver. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n## Initialize the vars for creating ddb expression **\n#set( $expNames = {} )\n#set( $expValues = {} )\n#set( $expSet = {} )\n#set( $expAdd = {} )\n#set( $expRemove = [] )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n## Model key **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyFields = [] )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyFields.add(\"$entry.key\"))\n  #end\n#else\n  #set( $keyFields = [\"id\"] )\n#end\n#foreach( $entry in $util.map.copyAndRemoveAllKeys($mergedValues, $keyFields).entrySet() )\n  #if( !$util.isNull($ctx.stash.metadata.dynamodbNameOverrideMap) && $ctx.stash.metadata.dynamodbNameOverrideMap.containsKey(\"$entry.key\") )\n    #set( $entryKeyAttributeName = $ctx.stash.metadata.dynamodbNameOverrideMap.get(\"$entry.key\") )\n  #else\n    #set( $entryKeyAttributeName = $entry.key )\n  #end\n  #if( $util.isNull($entry.value) )\n    #set( $discard = $expRemove.add(\"#$entryKeyAttributeName\") )\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n  #else\n    $util.qr($expSet.put(\"#$entryKeyAttributeName\", \":$entryKeyAttributeName\"))\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n    $util.qr($expValues.put(\":$entryKeyAttributeName\", $util.dynamodb.toDynamoDB($entry.value)))\n  #end\n#end\n#set( $expression = \"\" )\n#if( !$expSet.isEmpty() )\n  #set( $expression = \"SET\" )\n  #foreach( $entry in $expSet.entrySet() )\n    #set( $expression = \"$expression $entry.key = $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expAdd.isEmpty() )\n  #set( $expression = \"$expression ADD\" )\n  #foreach( $entry in $expAdd.entrySet() )\n    #set( $expression = \"$expression $entry.key $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expRemove.isEmpty() )\n  #set( $expression = \"$expression REMOVE\" )\n  #foreach( $entry in $expRemove )\n    #set( $expression = \"$expression $entry\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#set( $update = {} )\n$util.qr($update.put(\"expression\", \"$expression\"))\n#if( !$expNames.isEmpty() )\n  $util.qr($update.put(\"expressionNames\", $expNames))\n#end\n#if( !$expValues.isEmpty() )\n  $util.qr($update.put(\"expressionValues\", $expValues))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#set( $UpdateItem = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"UpdateItem\",\n  \"key\": $Key,\n  \"update\": $update\n} )\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($UpdateItem.put(\"condition\", $Conditions))\n#end\n$util.toJson($UpdateItem)\n## [End] Mutation Update resolver. **",
+            "responseMappingTemplate": "## [Start] ResponseTemplate. **\n$util.qr($ctx.result.put(\"__operation\", \"Mutation\"))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "s2b5o3jr2vh2dl7tbjfgefen4y",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/s2b5o3jr2vh2dl7tbjfgefen4y",
+            "name": "MutationupdateTodoauth0Function",
+            "dataSourceName": "TodoTable",
+            "requestMappingTemplate": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+            "responseMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#end\n#set( $inputFields = $util.parseJson($util.toJson($ctx.args.input.keySet())) )\n#set( $isAuthorized = false )\n#set( $allowedFields = [] )\n#set( $nullAllowedFields = [] )\n#set( $deniedFields = {} )\n#if( $util.authType() == \"IAM Authorization\" )\n  #set( $adminRoles = [\"amplifyapivtldc8f102f-dev\"] )\n  #foreach( $adminRole in $adminRoles )\n    #if( $ctx.identity.userArn.contains($adminRole) && $ctx.identity.userArn != $ctx.stash.authRole && $ctx.identity.userArn != $ctx.stash.unauthRole )\n      #return($util.toJson({}))\n    #end\n  #end\n  #if( $ctx.identity.userArn == $ctx.stash.unauthRole )\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized && $allowedFields.isEmpty() && $nullAllowedFields.isEmpty() )\n$util.unauthorized()\n#end\n#if( !$isAuthorized )\n  #foreach( $entry in $util.map.copyAndRetainAllKeys($ctx.args.input, $inputFields).entrySet() )\n    #if( $util.isNull($entry.value) && !$nullAllowedFields.contains($entry.key) )\n      $util.qr($deniedFields.put($entry.key, \"\"))\n    #end\n  #end\n  #foreach( $deniedField in $util.list.copyAndRemoveAll($inputFields, $allowedFields) )\n    $util.qr($deniedFields.put($deniedField, \"\"))\n  #end\n#end\n#if( $deniedFields.keySet().size() > 0 )\n  $util.error(\"Unauthorized on ${deniedFields.keySet()}\", \"Unauthorized\")\n#end\n$util.toJson({})\n## [End] Authorization Steps. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "u56xfk3nyfa2dpjzqv7u2j6nri",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/u56xfk3nyfa2dpjzqv7u2j6nri",
+            "name": "SubscriptionOnCreateTodoDataResolverFn",
+            "dataSourceName": "NONE_DS",
+            "requestMappingTemplate": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **",
+            "responseMappingTemplate": "## [Start] Subscription Response template. **\n$util.toJson(null)\n## [End] Subscription Response template. **",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "uodaqujtjfhybp6otjunznc6je",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/uodaqujtjfhybp6otjunznc6je",
+            "name": "MutationupdateTodoinit0Function",
+            "dataSourceName": "NONE_DS",
+            "requestMappingTemplate": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n#set( $updatedAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $updatedAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+            "responseMappingTemplate": "$util.toJson({})",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        },
+        {
+            "functionId": "vbmlj62mjfcglns3aw66bqdrjm",
+            "functionArn": "arn:aws:appsync:ap-southeast-2:119243932312:apis/q6l2uhsysrfppbovgxdjnxg7tu/functions/vbmlj62mjfcglns3aw66bqdrjm",
+            "name": "SubscriptiononCreateTodoauth0Function",
+            "dataSourceName": "NONE_DS",
+            "requestMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"IAM Authorization\" )\n  #set( $adminRoles = [\"amplifyapivtldc8f102f-dev\"] )\n  #foreach( $adminRole in $adminRoles )\n    #if( $ctx.identity.userArn.contains($adminRole) && $ctx.identity.userArn != $ctx.stash.authRole && $ctx.identity.userArn != $ctx.stash.unauthRole )\n      #return($util.toJson({}))\n    #end\n  #end\n  #if( !$isAuthorized )\n    #if( $ctx.identity.userArn == $ctx.stash.unauthRole )\n      #set( $isAuthorized = true )\n    #end\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+            "responseMappingTemplate": "$util.toJson({})",
+            "functionVersion": "2018-05-29",
+            "maxBatchSize": 0
+        }
+    ]
+}
