@@ -34,5 +34,12 @@
       "lastPushTimeStamp": "2022-05-19T22:52:11.839Z",
       "lastPushDirHash": "GDdCW6NhYpjZMp88PCcoUs6q73s="
     }
+  },
+  "function": {
+    "amplifyapivtldc8f102f": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }
