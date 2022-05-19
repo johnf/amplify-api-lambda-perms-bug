@@ -604,6 +604,5 @@
         }
       }
     }
-  },
-  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.2.0\",\"stackType\":\"api-AppSync\",\"metadata\":{}}"
+  }
 }

@@ -3,6 +3,7 @@ type Todo {
   id: ID!
   name: String!
   description: String
+  foo: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -107,6 +108,7 @@ input ModelTodoFilterInput {
   id: ModelIDInput
   name: ModelStringInput
   description: ModelStringInput
+  foo: ModelStringInput
   and: [ModelTodoFilterInput]
   or: [ModelTodoFilterInput]
   not: ModelTodoFilterInput
@@ -120,6 +122,7 @@ type Query {
 input ModelTodoConditionInput {
   name: ModelStringInput
   description: ModelStringInput
+  foo: ModelStringInput
   and: [ModelTodoConditionInput]
   or: [ModelTodoConditionInput]
   not: ModelTodoConditionInput
@@ -129,12 +132,14 @@ input CreateTodoInput {
   id: ID
   name: String!
   description: String
+  foo: String
 }
 
 input UpdateTodoInput {
   id: ID!
   name: String
   description: String
+  foo: String
 }
 
 input DeleteTodoInput {
