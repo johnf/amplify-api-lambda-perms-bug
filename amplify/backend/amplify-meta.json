@@ -52,14 +52,24 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifyapivtl-dev-84411-deployment/amplify-cfn-templates/function/amplifyapivtldc8f102f-cloudformation-template.json",
         "logicalId": "functionamplifyapivtldc8f102f"
       },
-      "lastPushTimeStamp": "2022-05-19T22:55:43.949Z",
+      "lastPushTimeStamp": "2022-05-19T22:56:35.570Z",
       "output": {
         "Region": "ap-southeast-2",
         "Arn": "arn:aws:lambda:ap-southeast-2:119243932312:function:amplifyapivtldc8f102f-dev",
         "Name": "amplifyapivtldc8f102f-dev",
         "LambdaExecutionRole": "amplifyapivtlLambdaRoledd226562-dev"
       },
-      "lastPushDirHash": "/Va73bWsfMPIKaONvJUBAGKQKPg="
+      "lastPushDirHash": "/Va73bWsfMPIKaONvJUBAGKQKPg=",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "amplifyapivtl",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
     }
   }
 }

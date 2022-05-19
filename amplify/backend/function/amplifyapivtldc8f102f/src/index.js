@@ -1,4 +1,9 @@
-
+/* Amplify Params - DO NOT EDIT
+	API_AMPLIFYAPIVTL_GRAPHQLAPIENDPOINTOUTPUT
+	API_AMPLIFYAPIVTL_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
