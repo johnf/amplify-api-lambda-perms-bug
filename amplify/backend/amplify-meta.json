@@ -11,5 +11,20 @@
       "StackId": "arn:aws:cloudformation:ap-southeast-2:119243932312:stack/amplify-amplifyapivtl-dev-84411/3545aa90-d7c5-11ec-b0cd-063e7b47a2d8",
       "AmplifyAppId": "d32nufwlrcw9r8"
     }
+  },
+  "api": {
+    "amplifyapivtl": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AWS_IAM"
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
   }
 }

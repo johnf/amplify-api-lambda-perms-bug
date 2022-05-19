@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "amplifyapivtl",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/home/johnf/dev/amplify-api-vtl/amplify/backend/api/amplifyapivtl/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AWS_IAM"
+    }
+  }
+}
