@@ -10,6 +10,14 @@
       "StackName": "amplify-amplifyapivtl-dev-84411",
       "StackId": "arn:aws:cloudformation:ap-southeast-2:119243932312:stack/amplify-amplifyapivtl-dev-84411/3545aa90-d7c5-11ec-b0cd-063e7b47a2d8",
       "AmplifyAppId": "d32nufwlrcw9r8"
+    },
+    "categories": {
+      "function": {
+        "amplifyapivtldc8f102f": {
+          "deploymentBucketName": "amplify-amplifyapivtl-dev-84411-deployment",
+          "s3Key": "amplify-builds/amplifyapivtldc8f102f-4d6d446d707671432f74-build.zip"
+        }
+      }
     }
   }
 }

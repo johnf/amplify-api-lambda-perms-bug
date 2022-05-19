@@ -13,5 +13,12 @@
         }
       }
     }
+  },
+  "function": {
+    "amplifyapivtldc8f102f": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }
